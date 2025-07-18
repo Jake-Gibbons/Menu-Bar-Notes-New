@@ -1,15 +1,11 @@
-//
-//  Menu_Bar_NotesApp.swift
-//  Menu Bar Notes
-//
-//  Created by Jake Gibbons on 05/07/2025.
-//
-
+// Menu_Bar_NotesApp.swift
 import SwiftUI
 import SwiftData
 
 @main
-struct Menu_Bar_NotesApp: App {
+struct MenuBarNotesApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
@@ -23,10 +19,16 @@ struct Menu_Bar_NotesApp: App {
         }
     }()
 
+    init() {
+        appDelegate.container = sharedModelContainer
+    }
+
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        // CORRECTED: This scene defines the window that opens when the user
+        // selects "Preferences" or "Settings". This is required to fix the crash.
+        Settings {
+            SettingsView()
+                .modelContainer(sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }

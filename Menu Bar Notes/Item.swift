@@ -1,18 +1,27 @@
-//
-//  Item.swift
-//  Menu Bar Notes
-//
-//  Created by Jake Gibbons on 05/07/2025.
-//
-
 import Foundation
 import SwiftData
 
 @Model
-final class Item {
+final class Item: Identifiable, Hashable {
+    @Attribute(.unique) var id: UUID
     var timestamp: Date
-    
-    init(timestamp: Date) {
+    var attributedContent: Data
+
+    var plainText: String {
+        (try? NSAttributedString(data: attributedContent, options: [:], documentAttributes: nil))?.string ?? ""
+    }
+
+    init(id: UUID = UUID(), timestamp: Date, attributedContent: Data) {
+        self.id = id
         self.timestamp = timestamp
+        self.attributedContent = attributedContent
+    }
+
+    static func == (lhs: Item, rhs: Item) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
