@@ -12,7 +12,7 @@ import SwiftData
 struct Menu_Bar_NotesApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Note.self,
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -24,9 +24,9 @@ struct Menu_Bar_NotesApp: App {
     }()
 
     var body: some Scene {
-        WindowGroup {
+        MenuBarExtra("Notes", systemImage: "note.text") {
             ContentView()
+                .modelContainer(sharedModelContainer)
         }
-        .modelContainer(sharedModelContainer)
     }
 }
